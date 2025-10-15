@@ -1,0 +1,2 @@
+../Core/Src/peripherals/i2c.c:11:6:I2C1_Init	4
+../Core/Src/peripherals/i2c.c:44:6:I2C2_Init	4

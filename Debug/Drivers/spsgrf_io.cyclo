@@ -1,0 +1,15 @@
+../Drivers/spsgrf_io.c:241:13:SPI_Write	3
+../Drivers/spsgrf_io.c:262:13:SPI_Error	1
+../Drivers/spsgrf_io.c:285:6:RadioSpiInit	3
+../Drivers/spsgrf_io.c:368:11:RadioSpiWriteRegisters	4
+../Drivers/spsgrf_io.c:417:11:RadioSpiReadRegisters	4
+../Drivers/spsgrf_io.c:466:11:RadioSpiCommandStrobes	3
+../Drivers/spsgrf_io.c:508:11:RadioSpiWriteFifo	4
+../Drivers/spsgrf_io.c:555:11:RadioSpiReadFifo	4
+../Drivers/spsgrf_io.c:623:6:RadioGpioInit	3
+../Drivers/spsgrf_io.c:681:6:RadioGpioInterruptCmd	2
+../Drivers/spsgrf_io.c:706:12:RadioGpioGetLevel	2
+../Drivers/spsgrf_io.c:733:6:RadioGpioSetLevel	1
+../Drivers/spsgrf_io.c:745:6:RadioEnterShutdown	1
+../Drivers/spsgrf_io.c:758:6:RadioExitShutdown	2
+../Drivers/spsgrf_io.c:773:12:RadioCheckShutdown	1

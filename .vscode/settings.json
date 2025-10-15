@@ -1,0 +1,10 @@
+{
+    "stm32-for-vscode.openOCDPath": "/opt/homebrew/bin/openocd",
+    "files.associations": {
+        "__verbose_abort": "cpp",
+        "cstdio": "cpp",
+        "atomic": "cpp",
+        "cstdint": "cpp",
+        "data_types.h": "c"
+    }
+}

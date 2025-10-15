@@ -1,0 +1,4 @@
+../Drivers/NDEF_TagType4_lib/lib_NDEF_SMS.c:59:13:NDEF_FillSMSStruct	48	static
+../Drivers/NDEF_TagType4_lib/lib_NDEF_SMS.c:118:13:NDEF_ReadURI_SMS	24	static
+../Drivers/NDEF_TagType4_lib/lib_NDEF_SMS.c:150:10:NDEF_ReadSMS	40	static
+../Drivers/NDEF_TagType4_lib/lib_NDEF_SMS.c:201:10:NDEF_WriteSMS	48	static

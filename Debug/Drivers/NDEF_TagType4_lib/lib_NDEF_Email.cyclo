@@ -1,0 +1,4 @@
+../Drivers/NDEF_TagType4_lib/lib_NDEF_Email.c:63:13:NDEF_FillEmailStruct	11
+../Drivers/NDEF_TagType4_lib/lib_NDEF_Email.c:143:13:NDEF_ReadURI_Email	2
+../Drivers/NDEF_TagType4_lib/lib_NDEF_Email.c:175:10:NDEF_ReadEmail	6
+../Drivers/NDEF_TagType4_lib/lib_NDEF_Email.c:221:10:NDEF_WriteEmail	12

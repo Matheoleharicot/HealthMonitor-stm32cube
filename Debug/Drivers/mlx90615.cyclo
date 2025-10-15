@@ -1,0 +1,7 @@
+../Drivers/mlx90615.c:36:1:mlx90615_write	1
+../Drivers/mlx90615.c:45:1:mlx90615_read	1
+../Drivers/mlx90615.c:55:1:mlx90615_read_multiple	1
+../Drivers/mlx90615.c:62:1:mlx90615_init	1
+../Drivers/mlx90615.c:69:1:mlx90615_get_id	1
+../Drivers/mlx90615.c:75:1:mlx90615_read_ambient_temp	1
+../Drivers/mlx90615.c:82:1:mlx90615_read_temp	1

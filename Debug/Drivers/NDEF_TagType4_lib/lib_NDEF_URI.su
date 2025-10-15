@@ -1,0 +1,4 @@
+../Drivers/NDEF_TagType4_lib/lib_NDEF_URI.c:55:13:NDEF_Parse_WellKnowType	32	static
+../Drivers/NDEF_TagType4_lib/lib_NDEF_URI.c:277:10:NDEF_ReadURI	40	static
+../Drivers/NDEF_TagType4_lib/lib_NDEF_URI.c:326:10:NDEF_WriteURI	48	static
+../Drivers/NDEF_TagType4_lib/lib_NDEF_URI.c:481:6:getUriType	16	static

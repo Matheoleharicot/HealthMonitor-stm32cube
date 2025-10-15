@@ -1,0 +1,4 @@
+../Drivers/NDEF_TagType4_lib/lib_NDEF_Vcard.c:61:13:NDEF_FillVcardStruct	9
+../Drivers/NDEF_TagType4_lib/lib_NDEF_Vcard.c:107:13:NDEF_ExtractVcard	2
+../Drivers/NDEF_TagType4_lib/lib_NDEF_Vcard.c:160:10:NDEF_ReadVcard	2
+../Drivers/NDEF_TagType4_lib/lib_NDEF_Vcard.c:179:10:NDEF_WriteVcard	3

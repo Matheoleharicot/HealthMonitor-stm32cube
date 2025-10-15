@@ -1,0 +1,4 @@
+../Drivers/NDEF_TagType4_lib/lib_NDEF_Geo.c:65:13:NDEF_FillGeoStruct	48	static
+../Drivers/NDEF_TagType4_lib/lib_NDEF_Geo.c:120:13:NDEF_ReadURI_Geo	24	static
+../Drivers/NDEF_TagType4_lib/lib_NDEF_Geo.c:152:10:NDEF_ReadGeo	40	static
+../Drivers/NDEF_TagType4_lib/lib_NDEF_Geo.c:203:10:NDEF_WriteGeo	48	static

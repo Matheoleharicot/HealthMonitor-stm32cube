@@ -1,0 +1,5 @@
+../Drivers/NDEF_TagType4_lib/lib_TT4_interface.c:75:10:TT4_Init	2
+../Drivers/NDEF_TagType4_lib/lib_TT4_interface.c:108:10:TT4_ReadNDEF	2
+../Drivers/NDEF_TagType4_lib/lib_TT4_interface.c:130:10:TT4_WriteNDEF	2
+../Drivers/NDEF_TagType4_lib/lib_TT4_interface.c:152:10:TT4_ReadURI	3
+../Drivers/NDEF_TagType4_lib/lib_TT4_interface.c:180:10:TT4_WriteURI	2
