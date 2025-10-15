@@ -165,7 +165,7 @@ int main(void)
 #if NFC_ENABLE
 	sURI_Info uri;
 	char url[256];
-	snprintf(url, sizeof(url), "192.168.0.254:8080/monitor?mac=%02X:%02X:%02X:%02X:%02X:%02X",
+	snprintf(url, sizeof(url), "192.168.0.254:8080/monitor?endpoint=%02X:%02X:%02X:%02X:%02X:%02X",
 			mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
 	strcpy(uri.protocol, URI_ID_0x03_STRING);
 	strcpy(uri.URI_Message, url);
