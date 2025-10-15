@@ -65,6 +65,9 @@ uint32_t socket = 0;
 uint8_t pdata = 3;
 uint16_t bytesSent;
 uint16_t bytesReceived;
+uint32_t time_sensor_update = 0;
+uint32_t time_max3010x_calc = 0;
+uint32_t time_network_tx = 0;
 
 int main(void)
 {
@@ -158,17 +161,24 @@ int main(void)
 	//  Main loop
 	while (1)
 	{
-		// BSP_GYRO_GetXYZ(gyroData);
-		// BSP_MAGNETO_GetXYZ(magnetoData);
-		// BSP_ACCELERO_AccGetXYZ(acceleroData);
-		// printf("Gyro: %f %f %f\n", gyroData[0], gyroData[1], gyroData[2]);
-		// printf("Magneto: %d %d %d\n", magnetoData[0], magnetoData[1],magnetoData[2]);
-		// printf("Accelero: %d %d %d\n", acceleroData[0], acceleroData[1],acceleroData[2]);
-		// HAL_Delay(100);
-		// printf("Temperature %f\n", mlx90615_read_temp()); // Lecture de la température avec le capteur infrarouge et affichage
-		// printf("Tick: %lu\n", HAL_GetTick());
+		if(AppFlags.sensor_update) {
+			uint32_t tick_start = HAL_GetTick();
+			float temp = BSP_TSENSOR_ReadTemp();
+			float humidity = BSP_HSENSOR_ReadHumidity();
+			float pressure = BSP_PSENSOR_ReadPressure();
+			time_sensor_update = HAL_GetTick() - tick_start;
+			AppFlags.sensor_update = 0;
+		}
+		
 		if(AppFlags.data_tx){
+			uint32_t tick_start = HAL_GetTick();
 			postData(BSP_TSENSOR_ReadTemp(), BSP_HSENSOR_ReadHumidity(), BSP_PSENSOR_ReadPressure(), BSP_TSENSOR_ReadTemp(), BSP_HSENSOR_ReadHumidity(), BSP_PSENSOR_ReadPressure(), AppFlags.falling);
+			time_network_tx = HAL_GetTick() - tick_start;
+			printf("\n===== TEMPS D'EXECUTION =====\n");
+			printf("Capteurs: %lu ms\n", time_sensor_update);
+			printf("MAX3010x: %lu ms\n", time_max3010x_calc);
+			printf("Reseau: %lu ms\n", time_network_tx);
+			printf("==============================\n\n");
 			AppFlags.data_tx = 0;
 		}
 		detectFall();
@@ -386,12 +396,13 @@ int detectFall(void)
 	if (AppFlags.max3010x_data_ready)
 	{
 		AppFlags.max3010x_data_ready = 0;
-
+		uint32_t tick_start = HAL_GetTick();
 		uint8_t count = max3010x_getUnreadSampleCount();
 		SAMPLE samples[32];
 
 		max3010x_getFIFO(samples, count);
 		max3010x_cal();
+		time_max3010x_calc = HAL_GetTick() - tick_start;
 		if (AppFlags.uart_print)
 		{
 			if (max3010x_isHeartRateValid())
