@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <wifi.h>
+#include <string.h>
 
 // Function declarations
 int WIFI_ReadLine(uint8_t socket, char *string);
@@ -26,7 +27,7 @@ int detectFall(void);
 
 // Configuration des fonctionnalités
 #define WLAN_ENABLE 0
-#define NFC_ENABLE 0
+#define NFC_ENABLE 1
 
 // Configuration du serveur distant
 const uint8_t RemoteIP[] = {192, 168, 0, 254};
@@ -68,6 +69,8 @@ uint16_t bytesReceived;
 uint32_t time_sensor_update = 0;
 uint32_t time_max3010x_calc = 0;
 uint32_t time_network_tx = 0;
+uint32_t time_busy_total = 0;
+uint32_t time_last_second = 0;
 
 int main(void)
 {
@@ -158,6 +161,24 @@ int main(void)
 	// WIFI_CloseClientConnection(socket);
 	
 	// getDate();
+	
+#if NFC_ENABLE
+	sURI_Info uri;
+	char url[256];
+	snprintf(url, sizeof(url), "192.168.0.254:8080/monitor?mac=%02X:%02X:%02X:%02X:%02X:%02X",
+			mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+	strcpy(uri.protocol, URI_ID_0x03_STRING);
+	strcpy(uri.URI_Message, url);
+	uri.Information[0] = '\0';
+	
+	if (TT4_WriteURI(&uri) == SUCCESS) {
+		printf("NFC tag configured successfully\n");
+	} else {
+		printf("Failed to configure NFC tag\n");
+	}
+#endif
+	
+	time_last_second = HAL_GetTick();
 	//  Main loop
 	while (1)
 	{
@@ -167,6 +188,7 @@ int main(void)
 			float humidity = BSP_HSENSOR_ReadHumidity();
 			float pressure = BSP_PSENSOR_ReadPressure();
 			time_sensor_update = HAL_GetTick() - tick_start;
+			time_busy_total += time_sensor_update;
 			AppFlags.sensor_update = 0;
 		}
 		
@@ -174,11 +196,22 @@ int main(void)
 			uint32_t tick_start = HAL_GetTick();
 			postData(BSP_TSENSOR_ReadTemp(), BSP_HSENSOR_ReadHumidity(), BSP_PSENSOR_ReadPressure(), BSP_TSENSOR_ReadTemp(), BSP_HSENSOR_ReadHumidity(), BSP_PSENSOR_ReadPressure(), AppFlags.falling);
 			time_network_tx = HAL_GetTick() - tick_start;
+			time_busy_total += time_network_tx;
+			
+			uint32_t elapsed = HAL_GetTick() - time_last_second;
+			float cpu_usage = (time_busy_total * 100.0f) / elapsed;
+			
 			printf("\n===== TEMPS D'EXECUTION =====\n");
 			printf("Capteurs: %lu ms\n", time_sensor_update);
 			printf("MAX3010x: %lu ms\n", time_max3010x_calc);
 			printf("Reseau: %lu ms\n", time_network_tx);
+			printf("Temps actif total: %lu ms sur %lu ms\n", time_busy_total, elapsed);
+			printf("Occupation CPU: %.1f%%\n", cpu_usage);
+			printf("Temps inactif: %.1f%%\n", 100.0f - cpu_usage);
 			printf("==============================\n\n");
+			
+			time_busy_total = 0;
+			time_last_second = HAL_GetTick();
 			AppFlags.data_tx = 0;
 		}
 		detectFall();
@@ -322,7 +355,8 @@ int WIFI_SendHTTPRequest(uint8_t socket, const char *method, const char *path,
 	WIFI_SendLine(socket, buffer);
 	snprintf(buffer, sizeof(buffer), "Host: %s", host);
 	WIFI_SendLine(socket, buffer);
-	WIFI_SendLine(socket, "User-Agent: B-L475EIOT01 C4:7F:51:06:A7:1E");
+	snprintf(buffer, sizeof(buffer), "User-Agent: B-L475EIOT01 %02X:%02X:%02X:%02X:%02X:%02X", mac[0], mac[1], mac[2], mac[3], mac[4], mac[5]);
+	WIFI_SendLine(socket, buffer);
 	WIFI_SendLine(socket, "Content-Type: application/x-www-form-urlencoded");
 	snprintf(buffer, sizeof(buffer), "Content-Length: %d", strlen(data));
 	WIFI_SendLine(socket, buffer);
@@ -403,6 +437,7 @@ int detectFall(void)
 		max3010x_getFIFO(samples, count);
 		max3010x_cal();
 		time_max3010x_calc = HAL_GetTick() - tick_start;
+		time_busy_total += time_max3010x_calc;
 		if (AppFlags.uart_print)
 		{
 			if (max3010x_isHeartRateValid())
